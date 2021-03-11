@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>reVR by ed9m en</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+	    <link rel="stylesheet" type="text/css" href="styles.css">
+	    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	    <script src="https://naver.github.io/egjs-view360/release/latest/dist/view360.pkgd.js"></script>
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	    <!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZF8LMQ003N"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-ZF8LMQ003N');
+		</script>
+
+
+		<style>
+	      @font-face { font-family: mf; src: url('20322.ttf') format("truetype"); } 
+	      body {
+			 font-family: mf
+		  }
+	    </style>
+
+	</head>
+	<body>
+		<div class="viewer" style="width:100%;height:100%;position:absolute;top:0%;left:0%;margin: 0 auto;outline: none;" data-page="1">
+    		<div class="container" style="width:100%;height:100%;position:absolute;"></div>
+    		
+    		<div class="hotspot link" data-page="1" data-anchor-index="3" data-yaw="180" data-pitch="41">
+		        <a href=index.html style="color:white"><p> 🇷🇺ru </p></a>
+		    </div>
+
+		    <!-- <div class="hotspot link" data-page="1" data-anchor-index="3" data-yaw="200" data-pitch="30">
+		        <h3> VR-концерт в шаре под Дубной </h3>
+		    </div> -->
+
+		    <div class="hotspot link" style="max-width:350px;" data-page="1" data-anchor-index="3" data-yaw="200" data-pitch="0">
+		    	<!-- <div class="hotspot link" data-page="1" data-anchor-index="3" data-yaw="200" data-pitch="35"> -->
+			    <h1> reVR <i>[rever]</i> </h1>
+			    <!-- </div> -->
+			    <p></p>
+		        <p>
+		        The mystic abandoned sphere that existed for forty years in the forest near Dubna was destroyed in early 2021. We decided to restore the spiritual atmosphere of that abandoned object with its unique acoustics by using immersive technologies to share this experience with others.
+		    	</p>
+		    	<iframe width="350" height="200" src="https://www.youtube.com/embed/5256VhX5knA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		    	<p></p>
+		    	<!-- <a href="https://forms.gle/pPYFCmB2YkP49Xfk8"  -->
+		    	<!-- style="background:none;border: 1px solid white;padding:50px;color:white;padding-top:10px;padding-bottom:10px;">PARTICIPATE</a> -->
+
+		    	<p><br></p>
+		    	<!-- <footer class="hotspot link" data-page="1" data-anchor-index="3" data-yaw="200" data-pitch="-30" id="footer"> -->
+					<a href="https://vk.com/ed9m_8" class="icon style2 fa-vk fa-icon"><span class="label">VK</span></a>
+					<a href="https://www.youtube.com/channel/UCp-xdHNpsBocSeJdqG_b0DA" class="icon style2 fa-youtube fa-icon"><span class="label">YouTube</span></a>
+					<a href="https://instagram.com/ed9m_band" class="icon style2 fa-instagram fa-icon"><span class="label">Instagram</span></a>
+					<a href="https://github.com/ed9m" class="icon style2 fa-github fa-icon"><span class="label">GitHub</span></a>
+					<a href="https://soundcloud.com/ed9m" class="icon style2 fa-soundcloud fa-icon"><span class="label">SoundCloud</span></a>
+				<!-- </footer> -->
+				<p></p>
+				<!-- <footer class="hotspot link" data-page="1" data-anchor-index="3" data-yaw="200" data-pitch="-35" id="footer"> -->
+				<p>ЭД9М 2021</p>
+				<!-- </footer> -->
+		    </div>
+
+		</div>
+	
+		<script>
+
+			const getImpulseBuffer = (audioCtx, impulseUrl) => {
+			    return fetch(impulseUrl)
+			    .then(res => res.arrayBuffer())
+			    .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer));
+			}
+
+			const getLiveAudio = (audioCtx) => {
+			    return navigator.mediaDevices.getUserMedia({audio: true})
+			    .then(stream => audioCtx.createMediaStreamSource(stream));
+			} 
+
+			async function init(){
+			  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+			  const audioCtx = new AudioContext();
+			  const input = await getLiveAudio(audioCtx);
+			  // alert('got audio!');
+			  
+			  const convolver = audioCtx.createConvolver();
+			  convolver.buffer = await getImpulseBuffer(audioCtx, "http://reverbjs.org/Library/AbernyteGrainSilo.m4a");
+			  // alert('got ir!');
+
+			  input.connect(convolver).connect(audioCtx.destination)
+			}
+
+			// init();
+
+
+			var layer = document.querySelector(".layer");
+		    var panoviewer = document.querySelector(".viewer");
+		    var container = document.querySelector(".viewer .container");
+		    var hotspots = Array.prototype.slice.call(document.querySelectorAll(".hotspot"));
+		    var currentPage = "1";
+
+		    function openLayer(img) {
+		        layer.querySelector("img").src = img;
+		        layer.style.display = "block";
+		    }
+		    function closeLayer(e) {
+		        if (e.target === layer) {
+		            layer.style.display = "none";
+		        }
+		    }
+		    function toRadian(deg) {
+		        return deg * Math.PI / 180;
+		    }
+		    function getHFov(fov) {
+		        var rect = container.getBoundingClientRect();
+		        var width = rect.width;
+		        var height = rect.height;
+		        return Math.atan(width / height * Math.tan(toRadian(fov) / 2)) / Math.PI * 360;
+		    }
+		    function rotate(point, deg) {
+		        var rad = toRadian(deg);
+		        var cos = Math.cos(rad);
+		        var sin = Math.sin(rad);
+
+		        return [cos * point[0] - sin * point[1], sin * point[0] + cos * point[1]];
+		    }
+		    function setHotspotOffset(hotspot, viewer) {
+		        var oyaw = viewer.getYaw();
+		        var opitch = viewer.getPitch();
+		        var yaw = parseFloat(hotspot.getAttribute("data-yaw"));
+		        var pitch = parseFloat(hotspot.getAttribute("data-pitch"));
+		        var deltaYaw = yaw - oyaw;
+		        var deltaPitch = pitch - opitch;
+
+		        if (deltaYaw < -180) {
+		            deltaYaw += 360;
+		        } else if (deltaYaw > 180) {
+		            deltaYaw -= 360;
+		        }
+		        if (Math.abs(deltaYaw) > 90) {
+		            hotspot.style.transform = "translate(-200px, 0px)";
+		            return;
+		        }
+		        var radYaw = toRadian(deltaYaw);
+		        var radPitch = toRadian(deltaPitch);
+
+		        var fov = viewer.getFov();
+		        var hfov = getHFov(fov);
+
+		        var rx = Math.tan(toRadian(hfov) / 2);
+		        var ry = Math.tan(toRadian(fov) / 2);
+
+
+		        var point = [
+		            Math.tan(-radYaw) / rx,
+		            Math.tan(-radPitch) / ry,
+		        ];
+
+		        // Image rotation compensation
+		        // The original image is about 10 degrees tilted.
+		        point = point.map(function (p) {
+		            return p * Math.cos(15 / 180 * Math.PI);
+		        });
+		        point[1] = rotate(point, deltaYaw > 0 ? -10 : 10)[1];
+
+		        // point[0] /= 1.05;
+		        var left = viewer._width / 2 + point[0] * viewer._width / 2;
+        		var top = viewer._height / 2 + point[1] * viewer._height / 2;
+
+		        hotspot.style.transform = "translate(" + left + "px, " + top + "px) translate(-50%, -50%)";
+		    }
+
+		    function setHotspotOffsets(viewer) {
+		        hotspots.filter(function (hotspot) {
+		            return hotspot.getAttribute("data-page") === currentPage;
+		        }).forEach(function (hotspot) {
+		            setHotspotOffset(hotspot, viewer);
+		        });
+		    }
+
+		    var viewer = new eg.view360.PanoViewer(container, {
+		        image: "pano.jpg",
+		        useZoom: false,
+		        gyroMode: "VR",
+		        yaw: 200
+		    }).on("ready", function (e) {
+		        viewer.lookAt({
+		            fov: 80,
+		        });
+		        setHotspotOffsets(viewer);
+		    }).on("viewChange", function (e) {
+		        // setHotspotOffsets(viewer);
+		    }).on("error", e => {
+		        console.error(e);
+		    });
+
+		    window.addEventListener("resize", function (e) {
+		        viewer.updateViewportDimensions();
+		        setHotspotOffsets(viewer);
+		    });
+
+		</script>
+	</body>
+</html>
